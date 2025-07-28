@@ -65,10 +65,9 @@ viz = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/climaterisk/scenario-generation"
-Repository = "https://github.com/climaterisk/scenario-generation"
-Documentation = "https://climaterisk.github.io/scenario-generation/"
-"Bug Tracker" = "https://github.com/climaterisk/scenario-generation/issues"
+Homepage = "https://github.com/nimmmalarohit/climate_risk_scenario_generation"
+Repository = "https://github.com/nimmmalarohit/climate_risk_scenario_generation"
+"Bug Tracker" = "https://github.com/nimmmalarohit/climate_risk_scenario_generation/issues"
 
 [project.scripts]
 climate-risk-cli = "climate_risk_scenario_generation.cli:main"
