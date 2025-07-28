@@ -1,11 +1,18 @@
 """
 Comprehensive test suite for the Climate Policy Query Parser
 Tests various query types, edge cases, and error conditions.
+
+Copyright (c) 2025 Rohit Nimmala
+Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
 """
 
 import unittest
 import json
-from climate_query_parser import ClimateQueryParser
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+
+from climate_risk_scenario_generation.core.parser import ClimateQueryParser
 
 
 class TestClimateQueryParser(unittest.TestCase):
@@ -132,7 +139,7 @@ class TestClimateQueryParser(unittest.TestCase):
         self.assertEqual(result['actor'], 'California')
         self.assertEqual(result['action'], 'carbon_pricing')
         self.assertEqual(result['magnitude'], 0.0)
-        self.assertLess(result['confidence'], 0.8)  # Lower confidence due to missing info
+        self.assertLess(result['confidence'], 0.8)
     
     def test_ambiguous_queries(self):
         """Test ambiguous or unclear queries"""
@@ -153,7 +160,6 @@ class TestClimateQueryParser(unittest.TestCase):
         result = self.parser.parse_query(query)
         
         self.assertEqual(result['actor'], 'Chicago')
-        # Should pick one primary action (likely the first mentioned)
         self.assertIn(result['action'], ['ev_mandate', 'building_standards'])
     
     def test_invalid_queries(self):
@@ -236,7 +242,7 @@ class TestClimateQueryParser(unittest.TestCase):
 
 
 def run_demonstration():
-    """Run demonstration with example queries for conference paper"""
+    """Run demonstration with example queries"""
     
     print("Climate Policy Query Parser - Conference Demonstration")
     print("=" * 60)
