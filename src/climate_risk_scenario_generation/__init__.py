@@ -1,5 +1,5 @@
 """
-Climate Risk Scenario Generation System
+Climate Policy Impact Analyzer
 
 A system for analyzing climate policy impacts using quantitative models
 and language model interpretation.
@@ -34,5 +34,5 @@ def get_system_info():
     return {
         'version': __version__,
         'components': __all__[:5],
-        'description': 'Climate risk scenario generation system'
+        'description': 'Climate policy impact analyzer'
     }

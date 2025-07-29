@@ -59,7 +59,7 @@ class IntegratedClimateAnalyzer:
         """Change the OpenAI model used for analysis."""
         self.selected_model = model
         # Recreate the LLM analyzer with new model
-        api_key_path = "/home/nimmmalarohit/Documents/git/climate_risk_scenario_generation/secrets/OPENAI_API_KEY.txt"
+        api_key_path = "secrets/OPENAI_API_KEY.txt"
         self.llm_analyzer = OpenAIClimateAnalyzer(api_key_path, model)
         logger.info(f"Model changed to {model}")
     
@@ -455,6 +455,7 @@ Do NOT recalculate any numbers. Use the provided quantitative results.
             
             # Parsed query for UI
             'parsed_query': {
+                'policy_type': analysis.parsed_parameters.policy_type,
                 'actor': analysis.parsed_parameters.actor,
                 'action': analysis.parsed_parameters.action,
                 'magnitude': analysis.parsed_parameters.magnitude or 0,

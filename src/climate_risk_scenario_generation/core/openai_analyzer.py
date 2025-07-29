@@ -58,11 +58,15 @@ class OpenAIClimateAnalyzer:
         # Initialize OpenAI client
         self.openai_client = None
         if api_key_path is None:
-            api_key_path = "/home/nimmmalarohit/Documents/git/climate_risk_scenario_generation/secrets/OPENAI_API_KEY.txt"
+            api_key_path = "secrets/OPENAI_API_KEY.txt"
         
         try:
             with open(api_key_path, 'r') as f:
                 api_key = f.read().strip()
+            
+            if not api_key or api_key == "your-openai-api-key-here" or api_key.startswith("sk-proj-your"):
+                raise ValueError("Invalid API key. Please set a valid OpenAI API key in secrets/OPENAI_API_KEY.txt")
+            
             self.openai_client = openai.OpenAI(api_key=api_key)
             logger.info("OpenAI client initialized successfully")
         except Exception as e:

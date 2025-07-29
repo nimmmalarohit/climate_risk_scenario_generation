@@ -3,9 +3,9 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "climate-risk-scenario-generation"
+name = "climate-policy-impact-analyzer"
 version = "1.0.0"
-description = "LLM-powered climate risk scenario generation for financial institutions"
+description = "LLM-powered climate policy impact analyzer for financial institutions"
 readme = "README.md"
 authors = [
     {name = "Rohit Nimmala", email = "r.rohit.nimmala@ieee.org"}
@@ -15,7 +15,7 @@ maintainers = [
 ]
 keywords = [
     "climate risk",
-    "scenario generation", 
+    "policy impact analysis", 
     "financial risk",
     "LLM",
     "machine learning",
@@ -69,8 +69,6 @@ Homepage = "https://github.com/nimmmalarohit/climate_risk_scenario_generation"
 Repository = "https://github.com/nimmmalarohit/climate_risk_scenario_generation"
 "Bug Tracker" = "https://github.com/nimmmalarohit/climate_risk_scenario_generation/issues"
 
-[project.scripts]
-climate-risk-cli = "climate_risk_scenario_generation.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Climate Risk Scenario Generation</title>
+    <title>Climate Policy Impact Analyzer</title>
     <style>
         * {
             margin: 0;
@@ -405,7 +405,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Climate Risk Scenario Generation</h1>
+            <h1>Climate Policy Impact Analyzer</h1>
             <p>LLM-Powered Interactive Climate Policy Analysis</p>
         </div>
         
@@ -417,7 +417,7 @@
             </div>
             {% else %}
             <div class="system-status status-error">
-                System Error: {{ system_error }}
+                System Error: {{ system_error|e }}
             </div>
             {% endif %}
             

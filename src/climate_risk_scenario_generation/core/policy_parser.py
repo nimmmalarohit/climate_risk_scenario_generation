@@ -193,6 +193,11 @@ class PolicyParameterParser:
             if city in query:
                 return city.title()
         
+        # Check for international actors
+        for actor in self.regions['international']:
+            if actor in query:
+                return actor.upper()
+        
         return 'unspecified'
     
     def _extract_target(self, query: str, policy_type: str) -> Optional[str]:

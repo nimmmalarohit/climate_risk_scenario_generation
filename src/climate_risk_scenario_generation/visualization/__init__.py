@@ -5,6 +5,7 @@ Copyright (c) 2025 Rohit Nimmala
 Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
 """
 
-from .publication_figures import PublicationFigures
+# Core visualization functionality would go here
+# Publication-specific code has been moved to paper_outputs/
 
-__all__ = ['PublicationFigures']
+__all__ = []

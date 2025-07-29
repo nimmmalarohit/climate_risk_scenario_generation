@@ -1,4 +1,4 @@
-# Climate Risk Scenario Generation
+# Climate Policy Impact Analyzer
 
 A quantitative climate policy risk analyzer that combines economic models with large language models to assess financial impacts of climate policies.
 
@@ -37,12 +37,13 @@ A quantitative climate policy risk analyzer that combines economic models with l
 6. [Navigating the Interface](#navigating-the-interface)
 7. [Understanding Results](#understanding-results)
 8. [Data Sources](#data-sources)
-9. [Limitations](#limitations)
-10. [Troubleshooting](#troubleshooting)
+9. [Testing](#testing)
+10. [Limitations](#limitations)
+11. [Troubleshooting](#troubleshooting)
 
 ## System Overview
 
-The Climate Risk Scenario Generation system analyzes "what-if" climate policy scenarios using real quantitative economic models combined with language model interpretation. 
+The Climate Policy Impact Analyzer analyzes "what-if" climate policy scenarios using real quantitative economic models combined with language model interpretation. 
 
 ### Architecture
 
@@ -257,7 +258,7 @@ If you see errors instead, check the [Troubleshooting](#troubleshooting) section
 
 1. **Open your web browser** (Chrome, Firefox, Safari, etc.)
 2. **Navigate to**: `http://localhost:5000`
-3. **You should see** a blue gradient page with "Climate Risk Scenario Generation" at the top
+3. **You should see** a blue gradient page with "Climate Policy Impact Analyzer" at the top
 4. **If the page doesn't load**, check that:
    - The terminal shows "Running on http://127.0.0.1:5000"
    - No error messages appear in the terminal
@@ -391,6 +392,72 @@ The system integrates data from multiple authoritative sources:
 - **Sectoral elasticities**: From econometric studies
 - **Technology learning curves**: Historical technology adoption data
 - **Carbon pricing effects**: Real-world carbon market data
+
+## Testing
+
+The system includes automated integration tests to verify all components work correctly.
+
+### Running Tests
+
+#### Unit Tests (Recommended)
+
+Run comprehensive unit tests for all system components:
+
+```bash
+# Run all unit tests
+python3 -m pytest tests/ -v
+
+# Run specific test modules
+python3 -m pytest tests/test_policy_parser.py -v
+python3 -m pytest tests/test_climate_data.py -v
+python3 -m pytest tests/test_generic_policy_model.py -v
+python3 -m pytest tests/test_integrated_analyzer.py -v
+python3 -m pytest tests/test_publication_figures.py -v
+
+# Run with coverage report
+python3 -m pytest tests/ --cov=src --cov-report=html
+```
+
+The unit test suite validates:
+- ✅ Policy parameter parsing from natural language
+- ✅ Climate data provider functionality
+- ✅ Economic model calculations
+- ✅ Integrated analysis workflows
+- ✅ Visualization generation
+- ✅ Error handling and edge cases
+
+#### Integration Tests
+
+Run end-to-end integration tests:
+
+```bash
+# Direct execution (recommended)
+python3 tests/integration_test.py
+
+# Or from project root
+cd /path/to/climate_risk_scenario_generation
+python3 tests/integration_test.py
+```
+
+The integration test suite validates:
+- ✅ All API endpoints (health, models, scenarios, examples)
+- ✅ Query processing with OpenAI integration
+- ✅ Input validation and error handling
+- ✅ Rate limiting functionality
+- ✅ Static file serving
+- ✅ Backend ↔ Frontend communication
+
+### Test Requirements
+
+**Unit Tests:**
+- No external dependencies required
+- Tests run in isolation with mock data
+- Can be run offline
+
+**Integration Tests:**
+- Server must be running: `python3 start_ui.py`
+- OpenAI API key configured
+- Internet connection for API calls
 
 ## Limitations
 

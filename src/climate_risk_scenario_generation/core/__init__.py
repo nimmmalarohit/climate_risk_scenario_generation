@@ -1,5 +1,5 @@
 """
-Core modules for climate risk scenario generation.
+Core modules for climate policy impact analysis.
 
 This package contains the main analysis components:
 - integrated_analyzer: Main analysis engine  

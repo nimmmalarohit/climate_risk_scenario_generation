@@ -14,18 +14,43 @@ import os
 import time
 from flask import Flask, render_template, request, jsonify, send_from_directory
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import traceback
+from collections import defaultdict
+import logging
+import signal
+import atexit
+from logging_config import setup_logging
 
-def install_flask():
-    """Install Flask if not available"""
+# Set up logging
+setup_logging()
+logger = logging.getLogger(__name__)
+
+# Graceful shutdown handling
+def signal_handler(signum, frame):
+    logger.info(f"Received signal {signum}, shutting down gracefully...")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)
+signal.signal(signal.SIGTERM, signal_handler)
+
+def check_python_version():
+    """Check if Python version is compatible"""
+    if sys.version_info < (3, 8):
+        print("Error: Python 3.8+ is required")
+        print(f"Current version: {sys.version}")
+        return False
+    return True
+
+def check_dependencies():
+    """Check if required dependencies are available"""
     try:
         import flask
-        print("Flask is already installed")
+        return True
     except ImportError:
-        print("Installing Flask...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "flask==2.3.3"])
-        print("Flask installed successfully")
+        print("Error: Flask not found. Please install dependencies:")
+        print("pip install -r requirements.txt")
+        return False
 
 def check_system_ready():
     """Check if the integrated climate analyzer is ready"""
@@ -54,7 +79,11 @@ def main():
         print("Current directory:", os.getcwd())
         return
     
-    install_flask()
+    if not check_python_version():
+        return
+        
+    if not check_dependencies():
+        return
     
     ready, error = check_system_ready()
     
@@ -67,7 +96,8 @@ def main():
         print("- Validation framework with confidence intervals")
         print("- LLM interpretation of quantitative results")
         print("\nAnalyze 'what-if' climate policy scenarios with real quantitative models")
-        print("The web interface will be available at: http://localhost:5000")
+        port = int(os.environ.get('PORT', 5000))
+        print(f"The web interface will be available at: http://localhost:{port}")
         print("\nPress Ctrl+C to stop the server")
         print("=" * 70)
         
@@ -89,6 +119,37 @@ def start_flask_app():
     from src.climate_risk_scenario_generation.visualization.publication_figures import PublicationFigures
     
     app = Flask(__name__)
+    
+    # Security headers
+    @app.after_request
+    def add_security_headers(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'DENY'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        if not os.environ.get('FLASK_DEBUG', 'False').lower() == 'true':
+            response.headers['Content-Security-Policy'] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'"
+        return response
+    
+    # Simple rate limiting (in production, use Redis or similar)
+    request_counts = defaultdict(list)
+    
+    def is_rate_limited(client_ip):
+        now = datetime.now()
+        
+        # Clean old requests for all IPs to prevent memory leak
+        for ip in list(request_counts.keys()):
+            request_counts[ip] = [req_time for req_time in request_counts[ip] 
+                                if now - req_time < timedelta(minutes=1)]
+            # Remove empty entries
+            if not request_counts[ip]:
+                del request_counts[ip]
+        
+        # Check if client has made more than 10 requests in the last minute
+        if len(request_counts.get(client_ip, [])) >= 10:
+            return True
+        
+        request_counts[client_ip].append(now)
+        return False
 
     try:
         integrated_analyzer = IntegratedClimateAnalyzer(model="gpt-3.5-turbo")
@@ -105,6 +166,22 @@ def start_flask_app():
         system_error = str(e)
         print(f"Integrated Analyzer initialization failed: {e}")
 
+    @app.route('/health')
+    def health_check():
+        """Health check endpoint for monitoring"""
+        health_status = {
+            'status': 'healthy' if system_ready else 'unhealthy',
+            'timestamp': datetime.now().isoformat(),
+            'system_ready': system_ready,
+            'version': '1.0.0',
+            'python_version': f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        }
+        
+        if system_error:
+            health_status['error'] = system_error
+            
+        return jsonify(health_status), 200 if system_ready else 503
+    
     @app.route('/')
     def index():
         """Main page with query input form"""
@@ -119,16 +196,31 @@ def start_flask_app():
                 'error': f'System not ready: {system_error}'
             }), 500
         
+        # Rate limiting check
+        client_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+        if is_rate_limited(client_ip):
+            return jsonify({'error': 'Rate limit exceeded. Please wait before making another request.'}), 429
+        
         try:
             start_time = datetime.now()
             
             data = request.get_json()
+            if not data:
+                return jsonify({'error': 'Invalid JSON payload'}), 400
+                
             query = data.get('query', '').strip()
             ngfs_scenario = data.get('ngfs_scenario', 'Net Zero 2050')
             selected_model = data.get('model', 'gpt-3.5-turbo')
             
             if not query:
                 return jsonify({'error': 'Query cannot be empty'}), 400
+            
+            if len(query) > 1000:
+                return jsonify({'error': 'Query too long. Please limit to 1000 characters.'}), 400
+            
+            # Basic content filtering
+            if any(word in query.lower() for word in ['<script', 'javascript:', 'eval(', 'exec(']):
+                return jsonify({'error': 'Invalid query content'}), 400
             
             print(f"Processing query: {query}")
             print(f"Using NGFS scenario: {ngfs_scenario}")
@@ -173,8 +265,13 @@ def start_flask_app():
         except Exception as e:
             print(f"Processing error: {e}")
             traceback.print_exc()
+            
+            # Don't expose internal errors to users in production
+            debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+            error_message = str(e) if debug else 'An error occurred while processing your query. Please try again.'
+            
             return jsonify({
-                'error': f'Processing failed: {str(e)}'
+                'error': error_message
             }), 500
 
     @app.route('/scenarios')
@@ -255,7 +352,9 @@ def start_flask_app():
         return send_from_directory('static', filename)
 
     # Start the Flask app
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    debug = os.environ.get('FLASK_DEBUG', 'False').lower() == 'true'
+    app.run(debug=debug, host='0.0.0.0', port=port)
 
 if __name__ == "__main__":
     main()
