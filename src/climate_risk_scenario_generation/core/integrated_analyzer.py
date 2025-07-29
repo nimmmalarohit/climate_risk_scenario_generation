@@ -18,6 +18,14 @@ from ..models.generic_policy_model import GenericPolicyModelFramework, PolicyImp
 from ..data.climate_data import ClimateDataProvider
 from .openai_analyzer import OpenAIClimateAnalyzer
 
+# New sophisticated components
+from .feedback_detector import FeedbackLoopDetector
+from ..models.dynamic_multipliers import DynamicMultiplierCalculator
+from ..models.cascade_propagation import CascadePropagationModel
+from ..data.data_integrator import DataSourceIntegrator
+from .uncertainty_quantification import UncertaintyQuantifier, ParameterDistribution
+from ..evaluation.performance_evaluator import PerformanceEvaluator
+
 logger = logging.getLogger(__name__)
 
 
@@ -36,12 +44,27 @@ class IntegratedAnalysis:
 
 class IntegratedClimateAnalyzer:
     """
-    Combines real quantitative models with LLM for accurate climate risk analysis.
+    Advanced integrated climate risk analyzer with sophisticated mathematical models.
+    
+    Combines traditional quantitative models with new components:
+    - Mathematical feedback loop detection
+    - Dynamic input-output economics
+    - Network-based cascade propagation
+    - Real-time data integration
+    - Monte Carlo uncertainty quantification
+    - Performance evaluation framework
     """
     
-    def __init__(self, api_key_path: str = None, model: str = "gpt-3.5-turbo"):
-        """Initialize integrated analyzer with all components."""
-        # Core components
+    def __init__(self, api_key_path: str = None, model: str = "gpt-3.5-turbo",
+                 use_advanced_components: bool = True):
+        """Initialize integrated analyzer with all components.
+        
+        Args:
+            api_key_path: Path to OpenAI API key
+            model: LLM model to use
+            use_advanced_components: Enable advanced mathematical components
+        """
+        # Core components (legacy)
         self.policy_parser = PolicyParameterParser()
         self.policy_framework = GenericPolicyModelFramework()
         self.data_provider = ClimateDataProvider()
@@ -49,7 +72,61 @@ class IntegratedClimateAnalyzer:
         self.llm_analyzer = OpenAIClimateAnalyzer(api_key_path, model)
         self.selected_model = model
         
+        # Advanced components (new)
+        self.use_advanced_components = use_advanced_components
+        if use_advanced_components:
+            self._initialize_advanced_components()
+        
         logger.info(f"Initialized with {len(self.policy_framework.get_available_policy_types())} policy models using {model}")
+        if use_advanced_components:
+            logger.info("Advanced mathematical components enabled")
+    
+    def _initialize_advanced_components(self):
+        """Initialize advanced mathematical components."""
+        try:
+            self.feedback_detector = FeedbackLoopDetector()
+            self.multiplier_calculator = DynamicMultiplierCalculator()
+            self.cascade_model = CascadePropagationModel()
+            self.data_integrator = DataSourceIntegrator()
+            self.uncertainty_quantifier = UncertaintyQuantifier()
+            self.performance_evaluator = PerformanceEvaluator()
+            
+            # Setup uncertainty parameters for key policy variables
+            self._setup_uncertainty_parameters()
+            
+            logger.info("Advanced components initialized successfully")
+        except Exception as e:
+            logger.warning(f"Could not initialize advanced components: {e}")
+            self.use_advanced_components = False
+    
+    def _setup_uncertainty_parameters(self):
+        """Setup uncertainty parameters for Monte Carlo analysis."""
+        # Energy sector multiplier uncertainty
+        energy_param = ParameterDistribution(
+            name='energy_multiplier',
+            distribution_type='normal',
+            parameters={'mean': 2.5, 'std': 0.4},
+            bounds=(1.5, 4.0)
+        )
+        self.uncertainty_quantifier.add_parameter(energy_param)
+        
+        # Policy effectiveness uncertainty
+        effectiveness_param = ParameterDistribution(
+            name='policy_effectiveness',
+            distribution_type='beta',
+            parameters={'alpha': 3, 'beta': 2, 'low': 0.3, 'high': 1.0},
+            bounds=(0.3, 1.0)
+        )
+        self.uncertainty_quantifier.add_parameter(effectiveness_param)
+        
+        # Economic elasticity uncertainty
+        elasticity_param = ParameterDistribution(
+            name='economic_elasticity',
+            distribution_type='triangular',
+            parameters={'low': -2.0, 'mode': -1.2, 'high': -0.5},
+            bounds=(-2.0, -0.5)
+        )
+        self.uncertainty_quantifier.add_parameter(elasticity_param)
     
     def get_available_models(self):
         """Get available OpenAI models with pricing."""
@@ -63,24 +140,32 @@ class IntegratedClimateAnalyzer:
         self.llm_analyzer = OpenAIClimateAnalyzer(api_key_path, model)
         logger.info(f"Model changed to {model}")
     
-    def analyze_query(self, query: str, ngfs_scenario: str = None) -> IntegratedAnalysis:
+    def analyze_query(self, query: str, ngfs_scenario: str = None, 
+                     enable_uncertainty: bool = True) -> IntegratedAnalysis:
         """
-        Perform integrated analysis using real models + LLM interpretation.
+        Perform integrated analysis using advanced mathematical models + LLM interpretation.
         
         Args:
             query: Natural language climate policy question
             ngfs_scenario: NGFS scenario to use (optional)
+            enable_uncertainty: Run uncertainty quantification
             
         Returns:
-            Integrated analysis with real calculations
+            Integrated analysis with sophisticated calculations
         """
         start_time = datetime.now()
         
         parsed_params = self.policy_parser.parse(query)
         logger.info(f"Parsed: {parsed_params.policy_type} {parsed_params.action} by {parsed_params.actor}")
         
-        # Run appropriate quantitative model
+        # Run base quantitative model
         policy_impact = self.policy_framework.calculate_policy_impact(parsed_params)
+        
+        # Analysis with advanced components
+        if self.use_advanced_components:
+            policy_impact = self._analyze_with_advanced_components(
+                parsed_params, policy_impact, enable_uncertainty
+            )
         
         # Align with NGFS scenarios
         ngfs_alignment = self._align_with_ngfs(parsed_params, policy_impact, ngfs_scenario)
@@ -105,6 +190,261 @@ class IntegratedClimateAnalyzer:
             confidence_assessment=confidence,
             processing_time=processing_time
         )
+    
+    def _analyze_with_advanced_components(self, params: PolicyParameters, 
+                                      policy_impact: PolicyImpact,
+                                      enable_uncertainty: bool = True) -> PolicyImpact:
+        """Analyze basic policy impact with advanced mathematical components."""
+        try:
+            # 1. Dynamic multiplier calculation
+            dynamic_multipliers = self._calculate_dynamic_multipliers(params, policy_impact)
+            
+            # 2. Mathematical feedback loop detection
+            feedback_loops = self._detect_mathematical_feedback_loops(policy_impact)
+            
+            # 3. Cascade propagation modeling
+            cascade_analysis = self._run_cascade_propagation(params, policy_impact)
+            
+            # 4. Real-time data integration
+            real_time_data = self._integrate_real_time_data(params)
+            
+            # 5. Uncertainty quantification
+            uncertainty_results = None
+            if enable_uncertainty:
+                uncertainty_results = self._run_uncertainty_analysis(params, policy_impact)
+            
+            # 6. Update policy impact with advanced results
+            advanced_impact = self._merge_advanced_results(
+                policy_impact, dynamic_multipliers, feedback_loops, 
+                cascade_analysis, real_time_data, uncertainty_results
+            )
+            
+            return advanced_impact
+            
+        except Exception as e:
+            logger.warning(f"Advanced analysis failed, using base results: {e}")
+            return policy_impact
+    
+    def _calculate_dynamic_multipliers(self, params: PolicyParameters, 
+                                     policy_impact: PolicyImpact) -> Dict[str, float]:
+        """Calculate dynamic economic multipliers using input-output model."""
+        dynamic_multipliers = {}
+        
+        # Get region from parsed parameters
+        region = params.actor.lower() if params.actor else 'national'
+        
+        # Calculate multipliers for key sectors
+        key_sectors = ['energy', 'transportation', 'manufacturing', 'finance', 'technology']
+        
+        for sector in key_sectors:
+            multiplier = self.multiplier_calculator.calculate_multiplier(
+                sector=sector,
+                region=region,
+                policy_type=params.policy_type
+            )
+            dynamic_multipliers[f'{sector}_multiplier'] = multiplier
+        
+        logger.debug(f"Calculated dynamic multipliers for {len(key_sectors)} sectors")
+        return dynamic_multipliers
+    
+    def _detect_mathematical_feedback_loops(self, policy_impact: PolicyImpact) -> List[Dict]:
+        """Detect feedback loops using mathematical network analysis."""
+        feedback_loops = self.feedback_detector.detect_loops(policy_impact)
+        
+        loop_summaries = []
+        for loop in feedback_loops:
+            loop_summaries.append({
+                'loop_id': loop.loop_id,
+                'type': loop.type,
+                'strength': loop.strength,
+                'variables': loop.variables,
+                'time_constant': loop.time_constant,
+                'stability': loop.stability,
+                'mathematical_equation': loop.equation,
+                'critical_threshold': loop.critical_threshold
+            })
+        
+        logger.debug(f"Detected {len(feedback_loops)} mathematical feedback loops")
+        return loop_summaries
+    
+    def _run_cascade_propagation(self, params: PolicyParameters, 
+                               policy_impact: PolicyImpact) -> Dict[str, Any]:
+        """Run cascade propagation using network diffusion model."""
+        # Convert policy impact to initial shock
+        initial_shock = {}
+        for sector, impacts in policy_impact.sectoral_impacts.items():
+            shock_magnitude = impacts.get('cost_increase_percent', 0) / 100
+            initial_shock[sector] = shock_magnitude
+        
+        # Run cascade propagation
+        cascade_result = self.cascade_model.propagate_shock(
+            initial_shock=initial_shock,
+            time_horizon=36  # 3 years
+        )
+        
+        # Calculate velocity metrics
+        velocity_metrics = self.cascade_model.calculate_cascade_velocity(cascade_result)
+        
+        # Analyze network centrality
+        centrality_metrics = self.cascade_model.analyze_network_centrality()
+        
+        cascade_summary = {
+            'total_impact': cascade_result.total_impact,
+            'propagation_speed': cascade_result.propagation_speed,
+            'bottleneck_sectors': cascade_result.bottlenecks,
+            'cascade_events': len(cascade_result.cascade_events),
+            'threshold_breaches': len(cascade_result.threshold_breaches),
+            'velocity_metrics': velocity_metrics,
+            'centrality_analysis': centrality_metrics,
+            'simulation_timeline': len(cascade_result.timeline)
+        }
+        
+        logger.debug(f"Cascade propagation: {cascade_result.total_impact:.2f} total impact")
+        return cascade_summary
+    
+    def _integrate_real_time_data(self, params: PolicyParameters) -> Dict[str, Any]:
+        """Integrate real-time economic and energy data."""
+        real_time_data = {}
+        
+        try:
+            # Get relevant economic indicators
+            gdp_data = self.data_integrator.get_economic_data('GDP', source='fred')
+            if gdp_data:
+                real_time_data['current_gdp'] = gdp_data.data['value'].iloc[-1]
+                real_time_data['gdp_trend'] = gdp_data.data['value'].pct_change().iloc[-1]
+            
+            unemployment_data = self.data_integrator.get_economic_data('UNRATE', source='fred')
+            if unemployment_data:
+                real_time_data['unemployment_rate'] = unemployment_data.data['value'].iloc[-1]
+            
+            # Get energy data based on policy type
+            if params.policy_type in ['renewable_mandate', 'transport_electrification']:
+                region = params.actor.upper() if params.actor else 'US'
+                energy_data = self.data_integrator.get_energy_data(region, 'electricity')
+                if energy_data:
+                    real_time_data['electricity_generation'] = energy_data.data['value'].iloc[-1]
+                    real_time_data['energy_trend'] = energy_data.data['value'].pct_change().iloc[-1]
+            
+            # Data quality assessment
+            quality_report = self.data_integrator.get_data_quality_report()
+            real_time_data['data_quality'] = quality_report.get('average_quality', 0.8)
+            real_time_data['data_freshness'] = quality_report.get('latest_update', 'Unknown')
+            
+        except Exception as e:
+            logger.warning(f"Real-time data integration failed: {e}")
+            real_time_data['error'] = str(e)
+        
+        logger.debug(f"Integrated {len(real_time_data)} real-time data points")
+        return real_time_data
+    
+    def _run_uncertainty_analysis(self, params: PolicyParameters, 
+                                policy_impact: PolicyImpact) -> Dict[str, Any]:
+        """Run Monte Carlo uncertainty quantification."""
+        
+        def policy_impact_function(uncertain_params):
+            """Function for Monte Carlo simulation."""
+            # Modify base impact based on uncertain parameters
+            base_gdp_impact = policy_impact.economic_impact.get('gdp_impact_percent', 0)
+            
+            energy_mult = uncertain_params.get('energy_multiplier', 2.5)
+            effectiveness = uncertain_params.get('policy_effectiveness', 0.8)
+            elasticity = uncertain_params.get('economic_elasticity', -1.2)
+            
+            # Combine uncertainties
+            modified_impact = (base_gdp_impact * energy_mult * effectiveness * 
+                             abs(elasticity) / 2.4)  # Normalize
+            
+            return modified_impact
+        
+        try:
+            # Run Monte Carlo simulation
+            uncertainty_results = self.uncertainty_quantifier.run_monte_carlo(
+                policy_impact_function=policy_impact_function,
+                n_simulations=500,
+                use_lhs=True
+            )
+            
+            # Extract key metrics
+            uncertainty_summary = {
+                'mean_impact': uncertainty_results.statistics['mean'],
+                'std_impact': uncertainty_results.statistics['std'],
+                'confidence_intervals': uncertainty_results.confidence_intervals,
+                'var_95': uncertainty_results.var_estimates.get('VaR_95%', 0),
+                'sensitivity_analysis': uncertainty_results.sensitivity_indices,
+                'monte_carlo_samples': len(uncertainty_results.output_samples)
+            }
+            
+            logger.debug(f"Uncertainty analysis: μ={uncertainty_summary['mean_impact']:.3f}, σ={uncertainty_summary['std_impact']:.3f}")
+            return uncertainty_summary
+            
+        except Exception as e:
+            logger.warning(f"Uncertainty analysis failed: {e}")
+            return {'error': str(e)}
+    
+    def _merge_advanced_results(self, base_impact: PolicyImpact, 
+                              multipliers: Dict, feedback_loops: List,
+                              cascade_results: Dict, real_time_data: Dict,
+                              uncertainty_results: Optional[Dict]) -> PolicyImpact:
+        """Merge advanced analysis results into policy impact."""
+        
+        # Create advanced copy
+        advanced_impact = PolicyImpact(
+            policy_params=base_impact.policy_params,
+            economic_impact=base_impact.economic_impact.copy(),
+            sectoral_impacts=base_impact.sectoral_impacts.copy(),
+            temporal_effects=base_impact.temporal_effects.copy(),
+            uncertainty_bounds=base_impact.uncertainty_bounds.copy(),
+            model_metadata=base_impact.model_metadata.copy()
+        )
+        
+        # Add dynamic multipliers to metadata
+        advanced_impact.model_metadata['dynamic_multipliers'] = multipliers
+        advanced_impact.model_metadata['model_version'] = 'advanced_v2.0'
+        advanced_impact.model_metadata['uses_mathematical_feedback'] = True
+        advanced_impact.model_metadata['uses_cascade_propagation'] = True
+        
+        # Add economic impact with uncertainty bounds
+        if uncertainty_results and 'confidence_intervals' in uncertainty_results:
+            ci_95 = uncertainty_results['confidence_intervals'].get('CI_95%')
+            if ci_95:
+                advanced_impact.economic_impact['gdp_impact_lower_95'] = ci_95[0]
+                advanced_impact.economic_impact['gdp_impact_upper_95'] = ci_95[1]
+                advanced_impact.economic_impact['gdp_impact_uncertainty'] = uncertainty_results['std_impact']
+        
+        # Add cascade propagation results
+        advanced_impact.economic_impact['total_cascade_impact'] = cascade_results.get('total_impact', 0)
+        advanced_impact.economic_impact['propagation_speed'] = cascade_results.get('propagation_speed', 0)
+        advanced_impact.model_metadata['bottleneck_sectors'] = cascade_results.get('bottleneck_sectors', [])
+        
+        # Add temporal effects with mathematical feedback loops
+        for loop_info in feedback_loops:
+            timeframe = 'long_term' if loop_info['time_constant'] > 12 else 'short_term'
+            
+            if timeframe not in advanced_impact.temporal_effects:
+                advanced_impact.temporal_effects[timeframe] = []
+            
+            advanced_impact.temporal_effects[timeframe].append({
+                'effect': f"Mathematical {loop_info['type']} feedback loop in {', '.join(loop_info['variables'][:2])}",
+                'magnitude': loop_info['strength'],
+                'confidence': 0.9 if loop_info['stability'] else 0.6,
+                'mathematical_basis': loop_info['mathematical_equation'][:50] + '...',
+                'loop_type': loop_info['type']
+            })
+        
+        # Add real-time data context
+        if real_time_data:
+            advanced_impact.model_metadata['real_time_data'] = real_time_data
+            advanced_impact.model_metadata['data_quality_score'] = real_time_data.get('data_quality', 0.8)
+        
+        # Add uncertainty metrics
+        if uncertainty_results:
+            advanced_impact.model_metadata['uncertainty_analysis'] = {
+                'monte_carlo_samples': uncertainty_results.get('monte_carlo_samples', 0),
+                'uncertainty_level': uncertainty_results.get('std_impact', 0),
+                'var_95_percent': uncertainty_results.get('var_95', 0)
+            }
+        
+        return advanced_impact
     
     def _align_with_ngfs(self, params: PolicyParameters, policy_impact: PolicyImpact, 
                         scenario: str = None) -> Dict[str, Any]:
@@ -280,7 +620,7 @@ Do NOT recalculate any numbers. Use the provided quantitative results.
     
     def _extract_key_insights(self, interpretation: str) -> List[str]:
         """Extract key insights from interpretation."""
-        # Simple extraction - could be enhanced
+        # Simple extraction
         insights = []
         lines = interpretation.split('\n')
         for line in lines:
@@ -619,6 +959,38 @@ Do NOT recalculate any numbers. Use the provided quantitative results.
             return 'Proceed with standard implementation planning'
         else:
             return 'Low-risk policy implementation'
+    
+    def enable_advanced_components(self, enable: bool = True):
+        """Enable or disable advanced mathematical components."""
+        if enable and not self.use_advanced_components:
+            self._initialize_advanced_components()
+        elif not enable:
+            self.use_advanced_components = False
+            logger.info("Advanced components disabled")
+    
+    def get_performance_evaluation(self) -> Dict[str, Any]:
+        """Get performance evaluation of the system."""
+        if not self.use_advanced_components:
+            return {"error": "Advanced components required for performance evaluation"}
+        
+        try:
+            # Run comprehensive performance evaluation
+            performance_results = self.performance_evaluator.run_comprehensive_evaluation()
+            
+            # Generate performance report
+            performance_report = self.performance_evaluator.generate_performance_report(performance_results)
+            
+            return {
+                'expert_approval_rate': performance_results.expert_approval_rate,
+                'rmse_improvement': performance_results.rmse_improvement,
+                'prevented_losses': performance_results.prevented_losses,
+                'portfolio_optimization_gain': performance_results.portfolio_optimization_gain,
+                'temporal_consistency': performance_results.temporal_consistency,
+                'detailed_report': performance_report
+            }
+        except Exception as e:
+            logger.error(f"Performance evaluation failed: {e}")
+            return {"error": str(e)}
 
 
 def test_integrated_analyzer():

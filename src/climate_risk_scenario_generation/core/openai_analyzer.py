@@ -502,7 +502,7 @@ Start with { and end with }. Response must follow this exact structure:
         # Get scenario parameters
         scenario_params = self.data_provider.get_ngfs_scenario_parameters(ngfs_scenario)
         
-        enhanced_query = f"""
+        detailed_query = f"""
 Query: {query}
 
 Use this specific NGFS scenario for analysis:
@@ -513,7 +513,7 @@ GDP Impact 2050: {scenario_params['gdp_impact_2050']*100:.1f}%
 Transition Speed: {scenario_params['transition_speed']}
 """
         
-        return self.analyze_query(enhanced_query)
+        return self.analyze_query(detailed_query)
 
 
 def main():

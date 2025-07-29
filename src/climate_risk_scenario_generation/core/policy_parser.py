@@ -78,7 +78,7 @@ class PolicyParameterParser:
             },
             'grid_investment': {
                 'keywords': ['grid', 'transmission', 'infrastructure', 'smart grid'],
-                'actions': ['invest', 'fund', 'build', 'upgrade'],
+                'actions': ['invest', 'fund', 'build', 'expand'],
                 'typical_units': ['billion', 'million', 'dollars'],
                 'default_magnitude_unit': 'USD billion'
             }
