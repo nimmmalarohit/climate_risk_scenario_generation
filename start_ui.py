@@ -5,7 +5,7 @@ Quantitative Climate Policy Risk Analyzer Web UI
 Analyzes 'what-if' climate policy scenarios using real economic models.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import subprocess
@@ -115,8 +115,9 @@ def main():
 
 def start_flask_app():
     """Start the Flask web application"""
-    from src.climate_risk_scenario_generation.core.integrated_analyzer import IntegratedClimateAnalyzer
-    from src.climate_risk_scenario_generation.visualization.publication_figures import PublicationFigures
+    sys.path.insert(0, 'src')
+    from climate_risk_scenario_generation.core.integrated_analyzer import IntegratedClimateAnalyzer
+    from climate_risk_scenario_generation.visualization.real_data_charts import RealDataCharts
     
     app = Flask(__name__)
     
@@ -231,10 +232,12 @@ def start_flask_app():
             
             analysis = integrated_analyzer.analyze_query(query, ngfs_scenario if ngfs_scenario != 'Auto' else None)
             
+            # Generate visualizations using only real analysis data
             viz_files = []
             try:
                 os.makedirs('static/viz', exist_ok=True)
                 
+                # Clean old files
                 import glob
                 old_files = glob.glob('static/viz/*.png')
                 for old_file in old_files:
@@ -243,19 +246,28 @@ def start_flask_app():
                     except:
                         pass
                 
-                fig_generator = PublicationFigures()
-                viz_files = fig_generator.generate_analysis_charts(analysis, 'static/viz')
+                # Format analysis for UI (this creates the dict structure with cascade, risk_assessment, etc.)
+                formatted_analysis = integrated_analyzer.format_for_ui(analysis)
+                
+                # Generate real-data-only charts using formatted data, with raw analysis for comprehensive dashboard
+                chart_generator = RealDataCharts()
+                viz_files = chart_generator.generate_analysis_charts(formatted_analysis, 'static/viz', raw_analysis=analysis)
                 viz_files = [f'/{path}' for path in viz_files]
-                print(f"Generated {len(viz_files)} visualizations")
+                
+                if viz_files:
+                    print(f"Generated {len(viz_files)} real-data visualizations: {[f.split('/')[-1] for f in viz_files]}")
+                else:
+                    print("No charts generated - insufficient real data available")
                 
             except Exception as e:
-                print(f"Visualization generation failed: {e}")
+                print(f"Chart generation failed: {e}")
                 viz_files = []
             
             end_time = datetime.now()
             processing_time = (end_time - start_time).total_seconds()
             
-            response = integrated_analyzer.format_for_ui(analysis)
+            # Use the already-formatted analysis
+            response = formatted_analysis
             response['processing_time'] = round(processing_time, 2)
             response['visualizations'] = viz_files
             
@@ -345,6 +357,77 @@ def start_flask_app():
         ]
         
         return jsonify(examples)
+
+    @app.route('/data-sources')
+    def get_data_sources():
+        """Get real-time data source status and recent data"""
+        if not system_ready:
+            return jsonify({'error': 'System not ready'}), 500
+        
+        try:
+            data_integrator = integrated_analyzer.data_integrator
+            
+            # Check API key status
+            sources_status = {}
+            for source_name, config in data_integrator.data_sources.items():
+                sources_status[source_name] = {
+                    'name': config.name,
+                    'api_key_configured': bool(config.api_key),
+                    'base_url': config.base_url,
+                    'rate_limit': config.rate_limit
+                }
+            
+            # Get sample real data from FRED
+            latest_economic_data = {}
+            if sources_status['fred']['api_key_configured']:
+                try:
+                    key_indicators = [
+                        ('GDP', 'GDP (Billions $)'),
+                        ('UNRATE', 'Unemployment Rate (%)'),
+                        ('CPIAUCSL', 'Consumer Price Index'),
+                        ('FEDFUNDS', 'Federal Funds Rate (%)')
+                    ]
+                    
+                    for series_id, description in key_indicators:
+                        data = data_integrator.get_economic_data(series_id, source='fred')
+                        if data and len(data.data) > 0:
+                            latest_value = data.data.iloc[-1].value
+                            latest_date = data.data.iloc[-1].name.strftime('%Y-%m')
+                            latest_economic_data[series_id] = {
+                                'description': description,
+                                'latest_value': round(latest_value, 2),
+                                'latest_date': latest_date,
+                                'data_points': len(data.data),
+                                'quality_score': round(data.quality_score, 2)
+                            }
+                except Exception as e:
+                    latest_economic_data['error'] = f"Error fetching FRED data: {str(e)}"
+            
+            # Get data quality report
+            try:
+                quality_report = data_integrator.get_data_quality_report()
+                if isinstance(quality_report, dict):
+                    data_quality = {
+                        'total_series': quality_report.get('total_series', 0),
+                        'average_quality': round(quality_report.get('average_quality', 0), 2)
+                    }
+                else:
+                    data_quality = {'total_series': quality_report, 'average_quality': 0.8}
+            except:
+                data_quality = {'total_series': 0, 'average_quality': 0.0}
+            
+            return jsonify({
+                'sources_status': sources_status,
+                'latest_economic_data': latest_economic_data,
+                'data_quality': data_quality,
+                'cache_info': {
+                    'cached_series': len(data_integrator.cached_series),
+                    'cache_dir': data_integrator.cache_dir
+                }
+            })
+            
+        except Exception as e:
+            return jsonify({'error': f'Failed to get data sources: {str(e)}'}), 500
 
     @app.route('/static/<path:filename>')
     def static_files(filename):

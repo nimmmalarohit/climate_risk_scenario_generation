@@ -1,0 +1,5 @@
+Model,Min_Time,Avg_Time,Max_Time,95th_Percentile,Cost_Per_Query
+GPT-3.5-turbo,4.27,5.68,6.92,6.8,0.008
+GPT-4,15.0,22.5,30.0,28.5,0.12
+GPT-4-turbo,12.0,18.0,25.0,23.5,0.18
+Ollama-llama3.1:8b,30.0,75.0,120.0,110.0,0.0

@@ -3,7 +3,7 @@
 Pytest configuration and fixtures.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import pytest

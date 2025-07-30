@@ -5,7 +5,7 @@ Climate risk analyzer that supports both OpenAI and Ollama models for
 scenario analysis and interpretation.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import os

@@ -1,0 +1,7 @@
+Symbol,Definition,Range/Units
+ΔRisk₁,First-order risk change,"[0, ∞)"
+α₁,Direct transmission coefficient,"[0, 1]"
+Shock,Policy magnitude,USD/ton or %
+β₁,Feedback transmission strength,"[0, 1]"
+γ₁,Threshold effect multiplier,"[0, 10]"
+τ,Time variable,months

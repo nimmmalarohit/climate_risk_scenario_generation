@@ -5,7 +5,7 @@ A system for analyzing climate policy impacts using quantitative models
 and language model interpretation.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 __version__ = "1.0.0"

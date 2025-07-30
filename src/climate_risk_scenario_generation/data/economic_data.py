@@ -10,8 +10,7 @@ Data Sources:
 - Energy Information Administration (EIA)
 - Bank for International Settlements (BIS)
 
-Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+Copyright (c) 2025 Climate Risk Scenario Generation Project
 """
 
 import json

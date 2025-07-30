@@ -17,7 +17,7 @@ Calculations include:
 - Dimensional consistency checks
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import numpy as np
@@ -166,7 +166,8 @@ class TransportElectrificationModel(BasePolicyModel):
         implementation_delay_factor = 1.0 / (1.0 + 0.05 * max(0, years_to_implementation - 2))
         
         # Combine financial and implementation adjustments
-        adjusted_impact = base_impact * pv_factor * implementation_delay_factor
+        urgency_factor = pv_factor * implementation_delay_factor
+        adjusted_impact = base_impact * urgency_factor
         
         # Historical validation check against known EV policy impacts
         # Norway EV transition: 80% EV share by 2022, ~0.1% GDP cost
@@ -401,19 +402,21 @@ class CarbonPricingModel(BasePolicyModel):
     
     def calculate_impact(self, params: PolicyParameters) -> PolicyImpact:
         """Calculate carbon pricing policy impact with input validation."""
-        # Input validation
-        if not params or not params.magnitude:
-            raise ValueError("Carbon price magnitude required")
+        # Input validation - provide default if magnitude not specified
+        if not params:
+            raise ValueError("PolicyParameters required")
         
-        # Validate carbon price range
-        if params.magnitude < 0 or params.magnitude > 500:
-            raise ValueError(f"Carbon price ${params.magnitude}/tCO2 outside valid range $0-500")
-        
-        # Warn if outside empirical range
-        if params.magnitude > 200:
-            logger.warning(f"Carbon price ${params.magnitude}/tCO2 above highest implemented price (~$200)")
-        
+        # Use default carbon price if not specified
         carbon_price = params.magnitude or 50  # $/tCO2
+        
+        # Validate carbon price range if specified
+        if params.magnitude is not None:
+            if params.magnitude < 0 or params.magnitude > 500:
+                raise ValueError(f"Carbon price ${params.magnitude}/tCO2 outside valid range $0-500")
+            
+            # Warn if outside empirical range
+            if params.magnitude > 200:
+                logger.warning(f"Carbon price ${params.magnitude}/tCO2 above highest implemented price (~$200)")
         
         # Calculate sectoral cost increases
         sectoral_impacts = {}

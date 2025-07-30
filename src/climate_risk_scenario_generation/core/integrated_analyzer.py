@@ -4,7 +4,7 @@ Integrated Climate Risk Analyzer
 Combines quantitative models with LLM intelligence for accurate analysis.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import json

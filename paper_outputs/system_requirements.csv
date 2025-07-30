@@ -1,0 +1,7 @@
+Component,Requirement,Actual_Used
+OS,Ubuntu 22.04.5 LTS,Linux-6.6.87.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+Python,3.8+,3.10.12
+Memory,32GB,32GB
+Processor,Hexa-core,AMD Ryzen 5 3rd Gen
+GPU,Optional,None
+Storage,10GB,~12GB

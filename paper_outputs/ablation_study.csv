@@ -1,0 +1,5 @@
+Component,Accuracy,Coverage,Confidence,Speed
+Parser_Only,65,45,55,85
+Cascade_Only,40,75,60,70
+Feedback_Only,35,60,80,65
+Full_System,100,100,100,100

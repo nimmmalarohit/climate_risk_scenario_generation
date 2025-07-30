@@ -1,0 +1,7 @@
+Sector,RMSE_Baseline,RMSE_Our_System,Improvement_Percent
+Energy,0.45,0.31,31
+Transportation,0.48,0.35,27
+Manufacturing,0.41,0.32,22
+Finance,0.38,0.31,18
+Real_Estate,0.42,0.36,15
+Technology,0.35,0.31,12

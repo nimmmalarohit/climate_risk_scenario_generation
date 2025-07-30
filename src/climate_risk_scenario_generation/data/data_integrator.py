@@ -14,7 +14,7 @@ Key Features:
 - Automatic retry logic with exponential backoff
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import logging

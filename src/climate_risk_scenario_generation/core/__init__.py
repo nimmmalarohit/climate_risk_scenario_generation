@@ -7,7 +7,7 @@ This package contains the main analysis components:
 - policy_parser: Natural language query parsing
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 from .integrated_analyzer import IntegratedClimateAnalyzer

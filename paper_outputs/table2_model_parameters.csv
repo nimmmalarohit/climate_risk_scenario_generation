@@ -1,0 +1,5 @@
+Model,Key_Parameters,Values,Data_Sources
+Transport Electrification,"S-curve k=0.4, Ban effectiveness=0.85",Employment multiplier=50x,"IEA, FRED"
+Carbon Pricing,Elasticities: -0.3 to -0.6,Abatement: 0.3%/$/tCO2,"ICAP, World Bank"
+Renewable Energy,Investment: 0B/%,Employment: 6 jobs/M,"IRENA, NREL"
+Fossil Fuel Regulation,Federal lands: 25%,"Oil jobs: 500,000","EIA, BLS"

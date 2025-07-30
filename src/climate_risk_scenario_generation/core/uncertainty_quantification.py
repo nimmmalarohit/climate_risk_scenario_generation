@@ -10,7 +10,7 @@ This module provides comprehensive uncertainty quantification capabilities inclu
 - Confidence interval estimation
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import logging
@@ -234,7 +234,9 @@ class UncertaintyQuantifier:
         if param.distribution_type == 'normal':
             mean = param.parameters['mean']
             std = param.parameters['std']
-            samples = stats.norm.ppf(uniform_samples, loc=mean, scale=std)
+            # Clamp uniform samples to avoid extreme values that cause NaN
+            clamped_samples = np.clip(uniform_samples, 1e-6, 1-1e-6)
+            samples = stats.norm.ppf(clamped_samples, loc=mean, scale=std)
         elif param.distribution_type == 'uniform':
             low = param.parameters['low']
             high = param.parameters['high']
@@ -256,8 +258,14 @@ class UncertaintyQuantifier:
         else:
             raise ValueError(f"Unsupported distribution type: {param.distribution_type}")
         
-        # Apply bounds
+        # Apply bounds and handle NaN/inf values
         samples = np.clip(samples, param.bounds[0], param.bounds[1])
+        
+        # Final check for NaN/inf values
+        samples = np.where(np.isnan(samples) | np.isinf(samples), 
+                          (param.bounds[0] + param.bounds[1]) / 2, 
+                          samples)
+        
         return samples
     
     def _sample_from_distribution(self, param: ParameterDistribution, 
@@ -286,8 +294,14 @@ class UncertaintyQuantifier:
         else:
             raise ValueError(f"Unsupported distribution type: {param.distribution_type}")
         
-        # Apply bounds
+        # Apply bounds and handle NaN/inf values
         samples = np.clip(samples, param.bounds[0], param.bounds[1])
+        
+        # Final check for NaN/inf values
+        samples = np.where(np.isnan(samples) | np.isinf(samples), 
+                          (param.bounds[0] + param.bounds[1]) / 2, 
+                          samples)
+        
         return samples
     
     def _apply_correlations(self, samples: np.ndarray) -> np.ndarray:
@@ -353,19 +367,26 @@ class UncertaintyQuantifier:
                 
                 # Handle different return types
                 if isinstance(result, (int, float)):
-                    output_samples.append(result)
+                    value = result if not (np.isnan(result) or np.isinf(result)) else 0.0
+                    output_samples.append(value)
                 elif hasattr(result, 'total_impact'):
-                    output_samples.append(result.total_impact)
+                    value = result.total_impact if not (np.isnan(result.total_impact) or np.isinf(result.total_impact)) else 0.0
+                    output_samples.append(value)
                 elif isinstance(result, dict):
                     # Use total impact or sum of impacts
                     if 'total_impact' in result:
-                        output_samples.append(result['total_impact'])
+                        value = result['total_impact'] if not (np.isnan(result['total_impact']) or np.isinf(result['total_impact'])) else 0.0
+                        output_samples.append(value)
                     else:
-                        output_samples.append(sum(result.values()))
+                        total = sum(result.values())
+                        value = total if not (np.isnan(total) or np.isinf(total)) else 0.0
+                        output_samples.append(value)
                 else:
                     # Default to first element if iterable
                     try:
-                        output_samples.append(float(result[0]))
+                        value = float(result[0])
+                        value = value if not (np.isnan(value) or np.isinf(value)) else 0.0
+                        output_samples.append(value)
                     except:
                         output_samples.append(0.0)
                         

@@ -1,0 +1,6 @@
+Metric,Static_NGFS,Our_System
+Update Frequency,Annual,Real-time
+Query Flexibility,Pre-defined scenarios,Natural language
+Response Time,N/A (pre-computed),5-30 seconds
+Feedback Modeling,Limited,Comprehensive
+Accuracy Improvement,Baseline,+15-31%

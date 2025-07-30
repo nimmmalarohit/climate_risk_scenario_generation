@@ -1,0 +1,27 @@
+@startuml
+!define RECTANGLE rectangle
+skinparam rectangle {
+  BackgroundColor white
+  BorderColor black
+}
+
+RECTANGLE "User Query\n\nNatural Language\n'CA bans gas cars\nby 2030?'" as Q
+
+RECTANGLE "Policy Parser\n\nExtract Parameters\nActor: CA\nAction: ban\nTimeline: 2030" as P
+
+RECTANGLE "Model Framework\n\nRoute to Models\nTransport\nCarbon Pricing\nRenewable Energy" as F
+
+RECTANGLE "Economic Models\n\nQuantitative Analysis\nS-curve adoption\nGDP impacts\nEmployment effects" as M
+
+RECTANGLE "LLM Interpreter\n\nGenerate Analysis\nGPT-3.5, GPT-4\nOllama (local)\nContext & insights" as L
+
+RECTANGLE "Results Display\n\nWeb Interface\nCharts & metrics\nRisk scenarios\nFeedback loops" as R
+
+Q -right-> P
+P -right-> F
+F -down-> M
+M -left-> L
+L -left-> R
+R -up-> Q
+
+@enduml

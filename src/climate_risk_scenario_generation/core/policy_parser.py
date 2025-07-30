@@ -4,7 +4,7 @@ Robust Policy Parameter Parser
 NLP-based parameter extraction for climate policy queries.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import re

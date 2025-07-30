@@ -1,0 +1,64 @@
+@startuml
+!theme plain
+skinparam defaultFontSize 11
+skinparam backgroundColor white
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+skinparam component {
+  BackgroundColor lightblue
+  BorderColor navy
+  FontColor black
+}
+
+skinparam arrow {
+  Color navy
+  Thickness 2
+}
+
+title LLM-Enhanced Climate Risk Analysis System
+
+component "User Query" as Q {
+  Natural Language Input
+  "CA bans gas cars by 2030?"
+}
+
+component "Policy Parser" as P {
+  Extract Parameters
+  Actor, Action, Timeline
+}
+
+component "Model Framework" as F {
+  Route to Models
+  Transport, Carbon, etc.
+}
+
+component "Economic Models" as M {
+  Quantitative Analysis
+  S-curve, GDP impacts
+}
+
+component "Climate Analyzer" as A {
+  Validate Results
+  NGFS alignment
+}
+
+component "LLM Interpreter" as L {
+  Generate Analysis
+  GPT/Ollama
+}
+
+component "Web Interface" as W {
+  Display Results
+  Charts & Metrics
+}
+
+Q --> P : Parse
+P --> F : Route
+F --> M : Model
+M --> A : Validate
+A --> L : Interpret
+L --> W : Present
+W --> Q : Feedback
+
+@enduml

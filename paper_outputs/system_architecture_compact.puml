@@ -1,0 +1,83 @@
+@startuml
+!theme plain
+skinparam defaultFontSize 10
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam roundCorner 8
+
+' Color scheme
+skinparam component {
+  BackgroundColor #E8F6FF
+  BorderColor #1E5F8C
+  FontColor #000000
+}
+
+skinparam rectangle {
+  BackgroundColor #E8F6FF
+  BorderColor #1E5F8C
+}
+
+skinparam arrow {
+  Color #1E5F8C
+  Thickness 2
+}
+
+title **LLM-Enhanced Climate Risk Analysis System**
+
+' Main components in a compact flow
+component "Query Input" as Q #FFF2CC {
+  Natural Language
+  "CA bans gas cars by 2030?"
+}
+
+component "Parser" as P #E8F6FF {
+  **PolicyParameterParser**
+  Actor: CA | Action: ban
+  Timeline: 2030 | Conf: 100%
+}
+
+component "Framework" as F #E8F6FF {
+  **Model Router**
+  Transport | Carbon
+  Renewable | Fossil
+}
+
+component "Models" as M #E8F6FF {
+  **Economic Models**
+  S-curve | Multipliers
+  GDP scaling | Employment
+}
+
+component "Analyzer" as A #E8F6FF {
+  **Climate Analyzer**
+  NGFS alignment
+  Validation | Scoring
+}
+
+component "LLM" as L #FFF2CC {
+  **LLM Interpreter**
+  GPT-3.5/4 | Ollama
+  Context | Analysis
+}
+
+component "Results" as R #E1F5FE {
+  **Interactive Output**
+  Risk metrics | Charts
+  Cascades | Feedback
+}
+
+' Compact flow with minimal text
+Q -right-> P : NLP
+P -right-> F : Params
+F -down-> M : Route
+M -right-> A : Data
+A -up-> L : Results
+L -left-> R : Analysis
+R -left-> Q : Response
+
+' Compact notes
+note top of L : **Options:** GPT-3.5(5-10s,$0.008) | GPT-4(15-30s,$0.12) | Ollama(30-120s,Free)
+note bottom of M : **Calibrated:** S-curve k=0.4 | 85% effectiveness | State GDP scaling
+
+@enduml

@@ -12,7 +12,7 @@ Data Sources:
 - State/Federal Policy Databases: Actual policy implementation data
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 from .climate_data import ClimateDataProvider

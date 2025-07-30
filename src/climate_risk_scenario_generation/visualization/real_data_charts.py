@@ -5,7 +5,7 @@ Creates charts and visualizations using only real analysis results.
 No mock data, no fallbacks - if there's no real data, no chart is generated.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import matplotlib.pyplot as plt
@@ -18,6 +18,9 @@ import warnings
 import os
 import time
 warnings.filterwarnings('ignore')
+
+# Import the comprehensive dashboard
+from .comprehensive_dashboard import ComprehensiveDashboard
 
 # Set clean, professional style
 plt.style.use('seaborn-v0_8')
@@ -48,8 +51,10 @@ class RealDataCharts:
             'secondary': '#A23B72',
             'accent': '#F18F01'
         }
+        # Initialize comprehensive dashboard
+        self.comprehensive_dashboard = ComprehensiveDashboard()
     
-    def generate_analysis_charts(self, analysis_result, output_dir: str) -> List[str]:
+    def generate_analysis_charts(self, analysis_result, output_dir: str, raw_analysis=None) -> List[str]:
         """
         Generate charts from real analysis results only.
         
@@ -89,6 +94,23 @@ class RealDataCharts:
             if metrics_chart:
                 generated_charts.append(metrics_chart)
             
+            # Chart 6: Comprehensive Analysis Dashboard (for any query)
+            # Pass both raw and formatted analysis to access all data sources
+            if raw_analysis is not None:
+                # Create combined data object with formatted risk assessment
+                combined_analysis = raw_analysis
+                # Override risk data with formatted version for consistency
+                if isinstance(analysis_result, dict) and 'risk_assessment' in analysis_result:
+                    combined_analysis._formatted_risk = analysis_result['risk_assessment']
+                # Add model name if available
+                if hasattr(raw_analysis, 'selected_model'):
+                    combined_analysis._model_name = raw_analysis.selected_model
+                comprehensive_chart = self.comprehensive_dashboard.generate_dashboard(combined_analysis, output_dir)
+            else:
+                comprehensive_chart = self.comprehensive_dashboard.generate_dashboard(analysis_result, output_dir)
+            if comprehensive_chart:
+                generated_charts.append(comprehensive_chart)
+            
         except Exception as e:
             print(f"Error generating charts: {e}")
         
@@ -119,15 +141,19 @@ class RealDataCharts:
             
             # Left: GDP Impact bar
             colors = ['#2E8B57' if gdp_impact > -0.5 else '#FF8C00' if gdp_impact > -2.0 else '#DC143C']
-            bars = ax1.bar(['GDP Impact'], [abs(gdp_impact)], color=colors[0])
+            bar_value = abs(gdp_impact)
+            bars = ax1.bar(['GDP Impact'], [bar_value], color=colors[0])
             ax1.set_ylabel('Impact (%)')
             ax1.set_title(f'Economic Impact: {gdp_impact:.2f}% GDP')
             ax1.grid(True, alpha=0.3)
             
+            # Set Y-axis limit to give more room and better proportion
+            ax1.set_ylim(0, max(bar_value * 1.4, 5.0))  # At least 5% or 40% more than the value
+            
             # Add value labels on bars
             for bar in bars:
                 height = bar.get_height()
-                ax1.text(bar.get_x() + bar.get_width()/2., height + 0.01,
+                ax1.text(bar.get_x() + bar.get_width()/2., height + bar_value * 0.05,
                         f'{gdp_impact:.2f}%', ha='center', va='bottom')
             
             # Right: Risk level pie chart

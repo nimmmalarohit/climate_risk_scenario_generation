@@ -4,7 +4,7 @@ Integration test for Climate Policy Impact Analyzer.
 Tests all backend/frontend communication paths.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import requests

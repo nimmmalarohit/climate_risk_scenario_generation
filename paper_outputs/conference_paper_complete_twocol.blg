@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2022/dev/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: conference_paper_complete_twocol.aux
+The style file: plain.bst
+Database file #1: references_complete.bib
+Warning--empty journal in bringas2024evaluating
+You've used 32 entries,
+            2118 wiz_defined-function locations,
+            674 strings with 9341 characters,
+and the built_in function-call counts, 10227 in all, are:
+= -- 962
+> -- 593
+< -- 0
++ -- 237
+- -- 202
+* -- 818
+:= -- 1822
+add.period$ -- 96
+call.type$ -- 32
+change.case$ -- 196
+chr.to.int$ -- 0
+cite$ -- 33
+duplicate$ -- 341
+empty$ -- 706
+format.name$ -- 202
+if$ -- 2008
+int.to.chr$ -- 0
+int.to.str$ -- 32
+missing$ -- 33
+newline$ -- 163
+num.names$ -- 64
+pop$ -- 160
+preamble$ -- 1
+purify$ -- 165
+quote$ -- 0
+skip$ -- 230
+stack$ -- 0
+substring$ -- 503
+swap$ -- 31
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 126
+warning$ -- 1
+while$ -- 93
+width$ -- 34
+write$ -- 343
+(There was 1 warning)

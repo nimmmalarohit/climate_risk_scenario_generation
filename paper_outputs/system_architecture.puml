@@ -1,0 +1,42 @@
+@startuml
+!define RECTANGLE class
+
+skinparam backgroundColor #FFFFFF
+skinparam rectangleBackgroundColor #E8F4F8
+skinparam rectangleBorderColor #2E86AB
+skinparam arrowColor #2E86AB
+skinparam arrowThickness 2
+
+title LLM-Powered Climate Risk Scenario Analysis System
+
+rectangle "User Query\n'What if California\nbans gas cars\nby 2030?'" as UserQuery #FFE4B5
+rectangle "PolicyParameterParser\n• Actor: California\n• Action: ban\n• Timeline: 2030\n• Confidence: 100%" as Parser #E8F4F8
+rectangle "GenericPolicyModelFramework\n• Transport Electrification\n• Carbon Pricing\n• Renewable Energy\n• Fossil Fuel Regulation" as Framework #E8F4F8
+rectangle "Quantitative Models\n• S-curve adoption\n• Sectoral multipliers\n• GDP scaling\n• Employment impacts" as Models #E8F4F8
+rectangle "IntegratedClimateAnalyzer\n• NGFS alignment\n• Validation\n• Confidence scoring" as Analyzer #E8F4F8
+rectangle "LLM Interpreter\n• OpenAI GPT-3.5/4\n• Ollama (local)\n• Context generation\n• Result interpretation" as LLM #FFE4B5
+rectangle "Web UI Results\n• Risk metrics\n• Visualizations\n• Cascade effects\n• Feedback loops" as Results #E8F4F8
+
+UserQuery --> Parser : Natural Language Processing
+Parser --> Framework : Structured Parameters
+Framework --> Models : Route to Appropriate Model
+Models --> Analyzer : Economic Impact Data
+Analyzer --> LLM : Quantitative Results
+LLM --> Results : Interpreted Analysis
+Results --> UserQuery : Interactive Response
+
+note right of LLM
+  Model Options:
+  • GPT-3.5: 5-10s, $0.008/query
+  • GPT-4: 15-30s, $0.12/query
+  • Ollama: 30-120s, Free
+end note
+
+note bottom of Models
+  Real-world calibrated parameters:
+  • Market maturity: S-curve k=0.4
+  • Ban effectiveness: 85%
+  • GDP scaling: State-specific
+end note
+
+@enduml

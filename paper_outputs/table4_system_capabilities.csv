@@ -1,0 +1,5 @@
+System,Update_Freq,Query_Flex,Feedback_Model,Response_Time
+Our System,Real-time,Natural language,Yes,5-30s
+JPMorgan CAF,Quarterly,Fixed metrics,No,Days
+Citi CRAS,Annual,4 dimensions,Limited,Days
+HSBC/WTW,Annual,Scenarios only,No,Weeks

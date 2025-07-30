@@ -1,0 +1,79 @@
+@startuml
+!theme plain
+skinparam defaultFontSize 9
+skinparam backgroundColor #FFFFFF
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam roundCorner 6
+
+' Compact color scheme
+skinparam component {
+  BackgroundColor #E8F6FF
+  BorderColor #2E5E8C
+  FontColor #000000
+}
+
+skinparam arrow {
+  Color #2E5E8C
+  Thickness 2
+}
+
+title **LLM-Enhanced Climate Risk Analysis Pipeline**
+
+' Horizontal layout for conference paper
+component "Input" as I #FFF2CC {
+  **User Query**
+  "CA bans gas cars 2030?"
+}
+
+component "Parse" as P #E8F6FF {
+  **Parameter Parser**
+  CA|ban|2030|100%
+}
+
+component "Route" as R #E8F6FF {
+  **Model Router**
+  Transport/Carbon
+  Renewable/Fossil
+}
+
+component "Compute" as C #E8F6FF {
+  **Economic Models**
+  S-curve|Multipliers
+  GDP|Employment
+}
+
+component "Validate" as V #E8F6FF {
+  **Analyzer**
+  NGFS align
+  Confidence
+}
+
+component "Interpret" as L #FFF2CC {
+  **LLM**
+  GPT/Ollama
+  Analysis
+}
+
+component "Output" as O #E1F5FE {
+  **Results**
+  Metrics|Charts
+  Feedback
+}
+
+' Horizontal flow
+I -right-> P : NLP
+P -right-> R : params
+R -right-> C : route
+C -right-> V : data
+V -right-> L : results
+L -right-> O : analysis
+
+' Feedback loop
+O -down-> I : interactive response
+
+' Minimal essential notes
+note bottom of L : GPT-3.5: 5-10s | GPT-4: 15-30s | Ollama: local
+note bottom of C : Calibrated: k=0.4, 85% effectiveness, state scaling
+
+@enduml

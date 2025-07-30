@@ -9,7 +9,7 @@ This module implements sophisticated feedback loop detection using:
 - Catastrophe theory for tipping point identification
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import logging

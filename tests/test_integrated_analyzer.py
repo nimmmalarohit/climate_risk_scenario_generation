@@ -3,7 +3,7 @@
 Unit tests for IntegratedClimateAnalyzer.
 
 Copyright (c) 2025 Rohit Nimmala
-Author: Rohit Nimmala <r.rohit.nimmala@ieee.org>
+
 """
 
 import pytest
@@ -193,7 +193,7 @@ class TestIntegratedClimateAnalyzer:
         if not self.analyzer:
             pytest.skip("Analyzer not available")
             
-        # Test with problematic input
+        # Test with edge case input
         try:
             result = self.analyzer.analyze_query("", ngfs_scenario="Nonexistent Scenario")
             # Should handle gracefully

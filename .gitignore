@@ -232,6 +232,7 @@ models/*.joblib
 # Log files
 *.log
 logs/
+server.log
 
 # Jupyter notebooks
 *.ipynb_checkpoints
@@ -245,3 +246,41 @@ integrated_system.py
 test_climate_parser.py
 test_scenarios.py
 usage_example.py
+
+# Project status and resume instructions
+TODO.md
+
+# Evaluation data
+evaluation_data/
+
+# Paper and publication outputs (exclude from version control except final versions)
+paper_outputs/*.aux
+paper_outputs/*.log
+paper_outputs/*.bbl
+paper_outputs/*.blg
+paper_outputs/*.out
+paper_outputs/*_test_*
+paper_outputs/*_actual_*
+paper_outputs/*_ieee_*
+paper_outputs/*_taylor_*
+paper_outputs/*_tf_*
+paper_outputs/*_working*
+paper_outputs/*_fixed*
+paper_outputs/*_updated*
+paper_outputs/*_corrected*
+paper_outputs/*.md
+paper_outputs/california_*
+!paper_outputs/*complete_twocol*
+
+# Individual figures generated from publication scripts
+paper_outputs/*.png
+!paper_outputs/high_level_architecture_simple.png
+!paper_outputs/model_confidence_metrics.png
+!paper_outputs/economic_impact_overview.png
+!paper_outputs/sectoral_employment_impact.png
+!paper_outputs/temporal_effects_analysis.png
+
+# Test visualization outputs
+static/charts_test_*/
+static/test_*/
+static/viz/

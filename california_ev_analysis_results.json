@@ -1,0 +1,171 @@
+{
+  "analysis_time_seconds": 18.902571,
+  "query": "What if California bans gas cars by 2030?",
+  "parsed_parameters": {
+    "actor": "California",
+    "action": "implementation",
+    "policy_type": "transport_electrification",
+    "magnitude": 100.0,
+    "timeline": 2030,
+    "confidence": 1.0
+  },
+  "policy_impact": {
+    "gdp_impact_percent": 0.6525,
+    "shock_magnitude": 0,
+    "cumulative_impact_score": 0,
+    "risk_classification": "MODERATE",
+    "sectoral_impacts": {
+      "automotive": {
+        "employment_thousands": 4.0,
+        "investment_billion": 0.2,
+        "gdp_percent": 0.0024000000000000002
+      },
+      "electricity": {
+        "demand_increase_percent": 2.0,
+        "infrastructure_billion": 0.14400000000000002
+      },
+      "oil_gas": {
+        "demand_decrease_percent": -3.2,
+        "employment_thousands": -1.6
+      },
+      "battery": {
+        "investment_billion": 0.4,
+        "employment_thousands": 6.0
+      }
+    },
+    "temporal_effects": {
+      "immediate": [
+        {
+          "effect": "Market announcement effect",
+          "magnitude": 0.020000000000000004,
+          "confidence": 0.8
+        },
+        {
+          "effect": "Investment flow changes",
+          "magnitude": 0.03,
+          "confidence": 0.7
+        }
+      ],
+      "short_term": [
+        {
+          "effect": "Production shifts",
+          "magnitude": 0.06,
+          "confidence": 0.7
+        },
+        {
+          "effect": "Employment transitions",
+          "magnitude": 0.04000000000000001,
+          "confidence": 0.6
+        },
+        {
+          "effect": "Mathematical balancing feedback loop in manufacturing, households",
+          "magnitude": 0.8364041109887436,
+          "confidence": 0.9,
+          "mathematical_basis": "dmanufacturing/dt = 0.600*construction + 0.400*tec...",
+          "loop_type": "balancing"
+        }
+      ],
+      "medium_term": [
+        {
+          "effect": "Full market adjustment",
+          "magnitude": 0.09000000000000001,
+          "confidence": 0.5
+        },
+        {
+          "effect": "Infrastructure completion",
+          "magnitude": 0.08000000000000002,
+          "confidence": 0.6
+        }
+      ],
+      "long_term": [
+        {
+          "effect": "Technology spillovers",
+          "magnitude": 0.12,
+          "confidence": 0.4
+        },
+        {
+          "effect": "Full economic adjustment",
+          "magnitude": 0.1,
+          "confidence": 0.5
+        }
+      ]
+    },
+    "cascade_effects": {},
+    "feedback_loops": [],
+    "economic_impact": {
+      "gdp_impact_percent": 0.6525,
+      "employment_change": 8.4,
+      "investment_shift_billion": 3.75,
+      "market_disruption_index": 0.06899744811276125,
+      "gdp_impact_lower_95": 0.8868292835307784,
+      "gdp_impact_upper_95": 1.304663483321367,
+      "gdp_impact_uncertainty": 0.11994067804517515,
+      "total_cascade_impact": 0.0,
+      "propagation_speed": 0.0
+    },
+    "uncertainty_bounds": {
+      "economic_impact": [
+        0.7292602725863824,
+        1.2707397274136176
+      ],
+      "sectoral_impacts": [
+        0.6751123271036589,
+        1.3248876728963412
+      ],
+      "temporal_effects": [
+        0.7834082180691059,
+        1.216591781930894
+      ]
+    },
+    "model_metadata": {
+      "model_type": "transport_electrification",
+      "market_maturity_at_implementation": 0.31002551887238755,
+      "base_impact": 0.5864783089584706,
+      "urgency_factor": 0.7399761518218266,
+      "years_to_implementation": 6,
+      "dynamic_multipliers": {
+        "energy_multiplier": 3.1813973488031544,
+        "transportation_multiplier": 2.0400063265407438,
+        "manufacturing_multiplier": 3.804265791180699,
+        "finance_multiplier": 5.761034478581329,
+        "technology_multiplier": 7.709908281956625
+      },
+      "model_version": "advanced_v2.0",
+      "uses_mathematical_feedback": true,
+      "uses_cascade_propagation": true,
+      "bottleneck_sectors": [],
+      "real_time_data": {
+        "current_gdp": 29962.047,
+        "gdp_trend": 0.008013191017157029,
+        "unemployment_rate": 4.1,
+        "data_quality": 0.8421130660824573,
+        "data_freshness": "2025-07-29T20:01:42.689399"
+      },
+      "data_quality_score": 0.8421130660824573,
+      "uncertainty_analysis": {
+        "monte_carlo_samples": 500,
+        "uncertainty_level": 0.11994067804517515,
+        "var_95_percent": 0.8983288180552944
+      }
+    }
+  },
+  "confidence_assessment": {
+    "parameter_extraction": 1.0,
+    "model_confidence": 0.8,
+    "validation_score": 1.0,
+    "data_quality": 0.9,
+    "overall": 0.9249999999999999
+  },
+  "validation_metrics": {
+    "quantitative_model_ran": true,
+    "has_numerical_results": true,
+    "llm_interpretation_success": true,
+    "results_reasonable": true,
+    "overall_valid": true
+  },
+  "processing_details": {
+    "model_used": "gpt-3.5-turbo",
+    "advanced_components": true,
+    "processing_time": 18.902549
+  }
+}
